@@ -3,6 +3,7 @@
 
 #include "CrossFun.h"
 
+//#define DEBUG 1
 #define max(a,b) (a>=b?a:b)
 #define min(a,b) (a<=b?a:b)
 
@@ -38,7 +39,14 @@ int MaxFun(int Taille, float** MF_X, int* MF_Min, float* Y_Min, int N_Min, float
 		Y_Cross[i] = 1 - (X_Cross[i] - MF_X[i][1])/(MF_X[i][2] - MF_X[i][1]);
 	}
 
-	printf("39\n");
+	#ifdef DEBUG	
+		printf("DEBUG --- line 43:\n");
+		for (i=0; i<Taille-1; i++)
+			printf("X_Cross[%i] = %f		Y_Cross[%i] = %f\n", i, X_Cross[i], i, Y_Cross[i]);
+
+		printf("\n");
+	#endif
+
 	// On range le tableau MF_Min et on garde la correspondance avec Y_Min
   for(i = 1; i < N_Min; i++)
 	{
@@ -59,10 +67,22 @@ int MaxFun(int Taille, float** MF_X, int* MF_Min, float* Y_Min, int N_Min, float
       }
     }
 	}
-	printf("60\n");
+	#ifdef DEBUG
+		printf("DEBUG --- Line 71:\n");
+		for(i = 0; i<4; i++)
+		{
+			printf("MF_Min[%i] = %i		Y_Min[%i] = %f\n", i, MF_Min[i], i, Y_Min[i]);
+		}
+		printf("\n");
+	#endif
 	// On enleve ensuite les doublons dans MF_Min et on garde la valeur Y_Min correspondante la plus grande
 	Y_Min_Temp = 0.0;
 	
+	#ifdef DEBUG
+		printf("DEBUG --- Line 82:\n");
+		printf("N_Min = %i\n\n",N_Min);
+	#endif
+
 	for(i = 0, j = 1; j < N_Min; j++)
   	if(MF_Min[i] != MF_Min[j])
     {
@@ -75,16 +95,37 @@ int MaxFun(int Taille, float** MF_X, int* MF_Min, float* Y_Min, int N_Min, float
 					if( Y_Min[k] > Y_Min_Temp )
 						Y_Min_Temp = Y_Min[k];
 				}
-				Y_Min[i] = Y_Min_Temp;
+				Y_Min[i-1] = Y_Min_Temp;
+				Y_Min[i] = Y_Min[j];
+				Y_Min_Temp = 0.0;
 			}
     }
-	// On enregistre dans N_Single le nombre d'elements "en simple" qui sont rangé en premier dans Y_Min et MF_Min
   N_Single = i + 1;  
-	printf("81\n");
-
+	
+	// cas ou on a des doublons en fin de liste
+	if(i != j-1)
+	{	
+		for(k = i; k < j+1; k++)
+		{
+			if( Y_Min[k] > Y_Min_Temp )
+				Y_Min_Temp = Y_Min[k];
+		}
+		Y_Min[i] = Y_Min_Temp;	
+	}
+	
+	#ifdef DEBUG
+		printf("DEBUG -- Line 104:\n");
+		for(i = 0; i<4; i++)
+		{
+			printf("MF_Min[%i] = %i		Y_Min[%i] = %f\n", i, MF_Min[i], i, Y_Min[i]);
+		}
+		printf("N_Single = %i\n", N_Single);
+		printf("N_Max_Temp = %i\n\n", N_Max_Temp);
+	#endif
+		
+	// On enregistre dans N_Single le nombre d'elements "en simple" qui sont rangé en premier dans Y_Min et MF_Min
 	// Maintenant on doit réaliser la fonction Max et définir les points "intéressants" pour défuzzifier par la suite
 		
-	printf("N_Max_Temp = %i\n", N_Max_Temp);
 	//On ajoute le premier point
 	if(MF_Min[0] == 0)	//Si la premiere MF est MF[0]
 	{
@@ -93,23 +134,27 @@ int MaxFun(int Taille, float** MF_X, int* MF_Min, float* Y_Min, int N_Min, float
 	}
 	else //Sinon
 	{
-		printf("95\n");
 		X_Max[N_Max_Temp] = MF_X[MF_Min[0]][0];
 		Y_Max[N_Max_Temp++] = 0.0;
 		
 		X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[0]][0], 0.0, MF_X[MF_Min[0]][1], 1.0, Y_Min[0]);
 		Y_Max[N_Max_Temp++] = Y_Min[0];
-	//debug
-	printf("N_Max_Temp = %i\n", N_Max_Temp);
 	}
-	printf("98\n");
+	
+	#ifdef DEBUG
+		printf("DEBUG -- Line 136:\n");
+		printf("N_Max_Temp = %i\n", N_Max_Temp);
+		for(i=0; i<N_Max_Temp; i++)
+			printf("X_Max[%i] = %f		Y_Max[%i] = %f\n",i, X_Max[i], i, Y_Max[i]);
+		printf("\n");
+	#endif
+
 	// Pour tous les autres points sauf le dernier
 	for(i = 0; i<N_Single-1; i++)
 	{
 		//PLusieurs cas différents:
 		if( Y_Min[i] > Y_Cross[MF_Min[i]] && Y_Min[i+1] > Y_Cross[MF_Min[i]] )
 		{
-			printf("105\n");
 			X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i]][1], 1.0, MF_X[MF_Min[i]][2], 0.0, Y_Min[i]);
 			Y_Max[N_Max_Temp++] = Y_Min[i];
 	
@@ -121,7 +166,6 @@ int MaxFun(int Taille, float** MF_X, int* MF_Min, float* Y_Min, int N_Min, float
 		}
 		else if( Y_Min[i] > Y_Cross[MF_Min[i]] && Y_Min[i+1] < Y_Cross[MF_Min[i]] )
 		{
-			printf("117\n");
 			X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i]][1], 1.0, MF_X[MF_Min[i]][2], 0.0, Y_Min[i]);
 			Y_Max[N_Max_Temp++] = Y_Min[i];	
 
@@ -130,7 +174,6 @@ int MaxFun(int Taille, float** MF_X, int* MF_Min, float* Y_Min, int N_Min, float
 		}
 		else if( Y_Min[i] < Y_Cross[MF_Min[i]] && Y_Min[i+1] > Y_Cross[MF_Min[i]] )
 		{
-			printf("126\n");
 			X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i+1]][1], 1.0, MF_X[MF_Min[i+1]][2], 0.0, Y_Min[i]);
 			Y_Max[N_Max_Temp++] = Y_Min[i];	
 
@@ -139,7 +182,6 @@ int MaxFun(int Taille, float** MF_X, int* MF_Min, float* Y_Min, int N_Min, float
 		}
 		else if( Y_Min[i] < Y_Cross[MF_Min[i]] && Y_Min[i+1] < Y_Cross[MF_Min[i]] )
 		{
-			printf("135\n");
 			if( Y_Min[i] > Y_Min[i+1] )
 			{		  
 			X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i]][1], 1.0, MF_X[MF_Min[i]][2], 0.0, Y_Min[i]);
@@ -164,24 +206,28 @@ int MaxFun(int Taille, float** MF_X, int* MF_Min, float* Y_Min, int N_Min, float
 	//On rajoute le dernier point
 	if (MF_Min[N_Single-1] == Taille-1) // La derniere MF de MF_Min est MF[taille-1]
 	{
-		printf("157\n");
 		X_Max[N_Max_Temp] = 1.0;
 		Y_Max[N_Max_Temp++] = Y_Min[N_Single-1];
 	}
 	else //Sinon
 	{
-		printf("164\n");
 		X_Max[N_Max_Temp] = MF_X[MF_Min[N_Single-1]][2];
 		Y_Max[N_Max_Temp++] = 0.0;
 	
 		X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[N_Single-1]][1], 1.0, MF_X[MF_Min[N_Single-1]][2], 0.0, Y_Min[N_Single-1]);
 		Y_Max[N_Max_Temp++] = Y_Min[0];
 	}
+
+
 	// Maintenant si tout c'est bien passé, on a tous les points :-) 
+	//printf("Valeurs de sorties de MaxFun : \n");
+	//for(i=0; i<14; i++ )
+		//printf("X_Max[%i] = %f\nY_Max[%i] = %f\n", i, X_Max[i], i, Y_Max[i]);
 
-	for(i=0; i<14; i++ )
-		printf("X_Max[%i] = %f\nY_Max[%i] = %f\n", i, X_Max[i], i, Y_Max[i]);
+	//printf("N_Max = %i\n", N_Max_Temp);
+	*N_Max = N_Max_Temp;
+	//printf("N_Max = %i\n", *N_Max);
 
-	printf("N_Max = %i\n", N_Max_Temp);
+
 	return 0;
 }

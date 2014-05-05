@@ -20,6 +20,7 @@ int Min_Fun(int TAILLE, int** regle, float A_Norm, float B_Norm, float** MF_X, i
 	// Initialisation compteurs
 	int i = 0;
 	int j = 0;
+	int count = 0;
 
 	// Initialisation variables
 	int N_A = 0;
@@ -119,13 +120,13 @@ int Min_Fun(int TAILLE, int** regle, float A_Norm, float B_Norm, float** MF_X, i
 	{
 		for (j = 0; j < N_B; j++)
 		{
-			MF_Min[i+j] = regle[MF_A[i]][MF_B[j]];
-			Y_Min[i+j] = min(Y_A[i], Y_B[j]);
+			MF_Min[count] = regle[MF_A[i]][MF_B[j]];
+			Y_Min[count++] = min(Y_A[i], Y_B[j]);
 		} 
 	}
 		
 	// On définit le nombre de MFs de sortie
-	*N_Min = (N_A * N_B);
+	*N_Min = count;
   
 	return 0;
 }

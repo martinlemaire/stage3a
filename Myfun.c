@@ -5,6 +5,7 @@
 
 #include "Min_Fun.h"
 #include "MaxFun.h"
+#include "Centroid.h"
 
 #define TAILLE 3
 
@@ -41,6 +42,7 @@ int main()
 	float X_Max[14] = {0};
 	int N_Max = 0;	
 
+	float Centroide = 0.0;
 		// Variables de test
 	int test_min = 0;
 	int test_max = 0;	
@@ -80,15 +82,17 @@ int main()
 	
 	//------ Normalisation des valeurs suivant l'echelle choisie ------//
 
-	if (strcmp(A_scale,"log") == 0)
-  {
- 		 A_norm = (log(A)-log(A_min))/(log(A_max)-log(A_min));
-  }
-  else
-  {
-     A_norm = (A-A_min)/(A_max-A_min);
-  }
+	//if (strcmp(A_scale,"log") == 0)
+  //{
+ 	//	 A_norm = (log(A)-log(A_min))/(log(A_max)-log(A_min));
+  //}
+  //else
+  //{
+  //   A_norm = (A-A_min)/(A_max-A_min);
+  //}
 
+	A_norm = 0.7;
+	
   if (strcmp(B_scale,"log") == 0)
   {
      B_norm = (log(B)-log(B_min))/(log(B_max)-log(B_min));
@@ -102,15 +106,23 @@ int main()
 	// On appele la fonction Min_Fun
  	test_min = Min_Fun(TAILLE, regle, A_norm, B_norm, MF_X, MF_Min, Y_Min, &N_Min);
 
-	// Debug
-	for(i = 0; i<4; i++)
-	{
-		printf("MF_Min[%i] = %i\nY_Min[%i] = %f\n", i, MF_Min[i], i, Y_Min[i]);
+	// Affichage sorties
+	//printf("Sorties de la fonction Min_Fun : \n");
+	//for(i = 0; i<4; i++)
+	//{
+		//printf("MF_Min[%i] = %i		Y_Min[%i] = %f\n", i, MF_Min[i], i, Y_Min[i]);
 
-	}
-	printf("N_Min = %i\n", N_Min);
+	//}
+	//printf("N_Min = %i\n\n", N_Min);
 	
 	// On appele la fonction MaxFun
 	test_max = MaxFun(TAILLE, MF_X, MF_Min, Y_Min, N_Min, X_Max, Y_Max, &N_Max);
 
+	// Affichage sorties MaxFun
+	//printf("Sortie de la fonction MaxFun : \n");
+
+	// On calcule la centroide a partir des X_Max et Y_Max
+	Centroide = Centroid(X_Max, Y_Max, N_Max);
+
+	printf("Centroide = %f\n", Centroide); 
 }

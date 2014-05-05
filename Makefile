@@ -1,7 +1,7 @@
 #Makefile de l'executable test
 
-all : Min_Fun.o CrossFun.o MaxFun.o Myfun.o
-	gcc -g Min_Fun.o CrossFun.o MaxFun.o Myfun.o -lm -o test
+all : Min_Fun.o CrossFun.o MaxFun.o Myfun.o Centroid.o
+	gcc -g Min_Fun.o CrossFun.o MaxFun.o Myfun.o Centroid.o -lm -o test
 
 Myfun.o : Min_Fun.c Myfun.c 
 	gcc -g -c Myfun.c -o Myfun.o
@@ -14,6 +14,9 @@ MaxFun.o : MaxFun.c CrossFun.c
 
 CrossFun.o : CrossFun.c
 	gcc -g -c CrossFun.c -o CrossFun.o
+
+Centroid.o : Centroid.c
+	gcc -g -c Centroid.c -o Centroid.o
 
 # suppression des fichiers temporaires
 clean:
