@@ -3,7 +3,7 @@
 
 #include "CrossFun.h"
 
-//#define DEBUG 1
+#define DEBUG 1
 #define max(a,b) (a>=b?a:b)
 #define min(a,b) (a<=b?a:b)
 
@@ -174,10 +174,10 @@ int MaxFun(int Taille, float** MF_X, int* MF_Min, float* Y_Min, int N_Min, float
 		}
 		else if( Y_Min[i] < Y_Cross[MF_Min[i]] && Y_Min[i+1] > Y_Cross[MF_Min[i]] )
 		{
-			X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i+1]][1], 1.0, MF_X[MF_Min[i+1]][2], 0.0, Y_Min[i]);
+			X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i+1]][1], 1.0, MF_X[MF_Min[i+1]][0], 0.0, Y_Min[i]);
 			Y_Max[N_Max_Temp++] = Y_Min[i];	
 
-			X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i+1]][1], 1.0, MF_X[MF_Min[i+1]][2], 0.0, Y_Min[i+1]);
+			X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i+1]][1], 1.0, MF_X[MF_Min[i+1]][0], 0.0, Y_Min[i+1]);
 			Y_Max[N_Max_Temp++] = Y_Min[i+1];	
 		}
 		else if( Y_Min[i] < Y_Cross[MF_Min[i]] && Y_Min[i+1] < Y_Cross[MF_Min[i]] )
@@ -192,10 +192,10 @@ int MaxFun(int Taille, float** MF_X, int* MF_Min, float* Y_Min, int N_Min, float
 			}
 			else if( Y_Min[i] < Y_Min[i+1] )
 			{
-			X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i+1]][1], 1.0, MF_X[MF_Min[i+1]][2], 0.0, Y_Min[i]);
+			X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i+1]][1], 1.0, MF_X[MF_Min[i+1]][0], 0.0, Y_Min[i]);
 			Y_Max[N_Max_Temp++] = Y_Min[i];	
 
-			X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i+1]][1], 1.0, MF_X[MF_Min[i+1]][2], 0.0, Y_Min[i+1]);
+			X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i+1]][1], 1.0, MF_X[MF_Min[i+1]][0], 0.0, Y_Min[i+1]);
 			Y_Max[N_Max_Temp++] = Y_Min[i+1];		
 			}
 		}
@@ -210,24 +210,28 @@ int MaxFun(int Taille, float** MF_X, int* MF_Min, float* Y_Min, int N_Min, float
 		Y_Max[N_Max_Temp++] = Y_Min[N_Single-1];
 	}
 	else //Sinon
-	{
+	{	
+		X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[N_Single-1]][1], 1.0, MF_X[MF_Min[N_Single-1]][2], 0.0, Y_Min[N_Single-1]);
+		Y_Max[N_Max_Temp++] = Y_Min[N_Single-1];
+
 		X_Max[N_Max_Temp] = MF_X[MF_Min[N_Single-1]][2];
 		Y_Max[N_Max_Temp++] = 0.0;
-	
-		X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[N_Single-1]][1], 1.0, MF_X[MF_Min[N_Single-1]][2], 0.0, Y_Min[N_Single-1]);
-		Y_Max[N_Max_Temp++] = Y_Min[0];
 	}
 
 
-	// Maintenant si tout c'est bien passé, on a tous les points :-) 
-	//printf("Valeurs de sorties de MaxFun : \n");
-	//for(i=0; i<14; i++ )
-		//printf("X_Max[%i] = %f\nY_Max[%i] = %f\n", i, X_Max[i], i, Y_Max[i]);
-
-	//printf("N_Max = %i\n", N_Max_Temp);
 	*N_Max = N_Max_Temp;
-	//printf("N_Max = %i\n", *N_Max);
 
+	#ifdef DEBUG 
+		printf("Valeurs de sorties de MaxFun : \n");
+		for(i=0; i<14; i++ )
+			printf("X_Max[%i] = %f		Y_Max[%i] = %f\n", i, X_Max[i], i, Y_Max[i]);
+		printf("N_Max = %i\n\n", *N_Max);
+	#endif
+
+	free(X_Cross);
+	X_Cross = NULL;
+	free(Y_Cross);
+	Y_Cross = NULL;
 
 	return 0;
 }

@@ -3,7 +3,7 @@
 
 #define K_Tri 0.292893218813
 
-//#define DEBUG
+#define DEBUG
 
 #define Dx	(X_Max[i+1] - X_Max[i])
 #define Dy	(Y_Max[i+1] - Y_Max[i])

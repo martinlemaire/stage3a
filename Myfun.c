@@ -12,16 +12,16 @@
 int main()
 {
 	// Entrées de la fonction
-	int regle_IN[TAILLE][TAILLE] = { { 0, 1, 2} , { 1, 2, 2} , { 2, 2, 2} };
+	int regle_IN[TAILLE][TAILLE] = { { 0, 0, 0} , { 0, 1, 1} , { 0, 1, 2} };
 	float A = 1*exp(-8);
 	float A_min = 1*exp(-9);
 	float A_max = 1*exp(-7);
 	char A_scale[] = "log";
-	float B = 0.1;
+	float B = 0.7;
 	float B_min = 0;
 	float B_max = 1;
 	char B_scale[] = "lin";
-	float MF_X_IN[TAILLE][3] = { {0 , 0 , 0.5 } , { 0 , 0.5 , 1 } , {0.5 , 1 , 1} };
+	float MF_X_IN[TAILLE][3] = { {0 ,0 , 0.5 } , { 0 , 0.5 , 1 } , {0.5 , 1 , 1} };
 
 	// Initialisation des variables
 	
@@ -91,7 +91,7 @@ int main()
   //   A_norm = (A-A_min)/(A_max-A_min);
   //}
 
-	A_norm = 0.7;
+	A_norm = 0.1;
 	
   if (strcmp(B_scale,"log") == 0)
   {
@@ -107,13 +107,13 @@ int main()
  	test_min = Min_Fun(TAILLE, regle, A_norm, B_norm, MF_X, MF_Min, Y_Min, &N_Min);
 
 	// Affichage sorties
-	//printf("Sorties de la fonction Min_Fun : \n");
-	//for(i = 0; i<4; i++)
-	//{
-		//printf("MF_Min[%i] = %i		Y_Min[%i] = %f\n", i, MF_Min[i], i, Y_Min[i]);
+	printf("Sorties de la fonction Min_Fun : \n");
+	for(i = 0; i<4; i++)
+	{
+		printf("MF_Min[%i] = %i		Y_Min[%i] = %f\n", i, MF_Min[i], i, Y_Min[i]);
 
-	//}
-	//printf("N_Min = %i\n\n", N_Min);
+	}
+	printf("N_Min = %i\n\n", N_Min);
 	
 	// On appele la fonction MaxFun
 	test_max = MaxFun(TAILLE, MF_X, MF_Min, Y_Min, N_Min, X_Max, Y_Max, &N_Max);
@@ -125,4 +125,22 @@ int main()
 	Centroide = Centroid(X_Max, Y_Max, N_Max);
 
 	printf("Centroide = %f\n", Centroide); 
+
+
+	// On libere la mémoire allouée
+	for(i=0; i<TAILLE; i++)
+	{
+		free(MF_X[i]);
+		MF_X[i] = NULL;
+		free(regle[i]);
+		regle[i] = NULL;
+	}
+
+	free(MF_X);
+	MF_X = NULL;
+
+	free(regle);
+	regle = NULL;
+
+	return 0;
 }
