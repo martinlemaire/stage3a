@@ -1,12 +1,12 @@
 #Makefile de l'executable test
 
-all : Min_Fun.o CrossFun.o MaxFun.o Myfun.o Centroid.o Fuzzy.o ProdFun.o
-	gcc -g Min_Fun.o CrossFun.o MaxFun.o Myfun.o Centroid.o Fuzzy.o ProdFun.o -lm -o test
+all : Min_Fun.o CrossFun.o MaxFun.o Centroid.o Fuzzy.o ProdFun.o Surface.o MainSurface.o
+	gcc -g Min_Fun.o CrossFun.o MaxFun.o Centroid.o Fuzzy.o ProdFun.o Surface.o MainSurface.o -lm -o Surface
 
-Myfun.o : Min_Fun.c Myfun.c MaxFun.c 
-	gcc -g -c Myfun.c -o Myfun.o
-
-Fuzzy.o : Min_Fun.c MaxFun.c Centroid.c
+MainSurface.o: Fuzzy.c Surface.c
+	gcc -g -c MainSurface.c -o MainSurface.o
+	
+Fuzzy.o : Min_Fun.c MaxFun.c Centroid.c ProdFun.c
 	gcc -g -c Fuzzy.c -o Fuzzy.o
 
 Min_Fun.o : Min_Fun.c
@@ -23,6 +23,10 @@ Centroid.o : Centroid.c
 
 ProdFun.o : ProdFun.c
 	gcc -g -c ProdFun.c -o ProdFun.o
+
+Surface.o : Surface.c  Fuzzy.c
+	gcc -g -c Surface.c -o Surface.o
+
 # suppression des fichiers temporaires
 clean:
 	rm -rf *.o
@@ -31,3 +35,4 @@ clean:
 # en vue d'une reconstruction complète
 mrproper: clean
 	rm -rf Programme
+

@@ -1,11 +1,6 @@
 //------------------------------------------------------------------------------------------------------------------//
-// Fichier			: Min_Fun.c																																													//
+// Fichier			: ProdFun.c																																													//
 // Auteur 			: LEMAIRE Martin																																										//
-// Description	: Fonction Fuzzy qui va prendre les valeurs normalisées d'entrées, définir leur appartenance aux 		//	
-//                différentes Memberships Functions (MFs), la hauteur associé à ces MFs (Ordonnées de croisement 		//
-//								entre la MF et la droite x = A_Norm par exemple). Ensuite cette fonction va appliquer la matrice	//
-//								des règles à ces MFs définissant suivant les entrées les MFs de sortie correspondantes, et 				//
-//								la hauteur associée a celle ci grace a la fonction Minimum. 																			//
 //------------------------------------------------------------------------------------------------------------------//
 
 #include <stdio.h>
@@ -14,14 +9,12 @@
 #define max(a,b) (a>=b?a:b)
 #define min(a,b) (a<=b?a:b)
 
-//#define DEBUG
-
-int Min_Fun(int TAILLE, int** regle, float A_Norm, float B_Norm, float** MF_X, int* MF_Min, float* Y_Min, int* N_Min)
-{	
+int ProdFun(int TAILLE, int** regle, float A_Norm, float B_Norm, float** MF_X, int* MF_Prod, float* Y_Prod, int* N_Prod)
+{
 	// Initialisation compteurs
 	int i = 0;
 	int j = 0;
-	int count = 0;
+	int count = 0;	
 
 	// Initialisation variables
 	int N_A = 0;
@@ -32,54 +25,47 @@ int Min_Fun(int TAILLE, int** regle, float A_Norm, float B_Norm, float** MF_X, i
 	
 	float Y_A[2] = {0,0};
 	float Y_B[2] = {0,0};
-	
-	int testA = 1;
-	int testB = 1;
+
+	int A_Normal = 1;
+	int B_Normal = 1;
+		
 	//------ Appartenances aux différentes MFs pour A_Norm et B_norm ------//
-		// On teste deja si c'est égal a 0 ou 1
+
+		// On teste d'abord les points 0 et 1
 	if (A_Norm == 0 || A_Norm == 1)
 	{
 		MF_A[N_A] = A_Norm * (TAILLE -1);
 		N_A++;
+		A_Normal = 0;
 	}
 	if (B_Norm == 0 || B_Norm == 1)
-	{
+	{	
 		MF_B[N_B] = B_Norm * (TAILLE -1);
 		N_B++;
+		B_Normal = 0;
 	}
-		// On teste le reste
-	for ( i = 0; i<TAILLE; i++ )
+		// On teste les autres si besoin
+	if (A_Normal == 1 && B_Normal == 1)
 	{
-		if ( A_Norm > MF_X[i][0] && A_Norm < MF_X[i][2] )
+		for ( i = 0; i<TAILLE; i++ )
 		{
-			MF_A[N_A] = i;
-			N_A++;
-
-			#ifdef DEBUG
-				printf("DEBUG --- Line 48 --- Min_Fun.c\n");
-				printf("MF_A[%i] = %i\n", N_A -1, i);
-			#endif	
-		} 
-		if ( B_Norm > MF_X[i][0] && B_Norm < MF_X[i][2] )
-		{
-			MF_B[N_B] = i;
-			N_B++;
-
-			#ifdef DEBUG
-				printf("MF_B[%i] = %i\n", N_B -1, i);
-				printf("\n");
-			#endif
+			if ( (A_Norm > MF_X[i][0] && A_Norm < MF_X[i][2]) && A_Normal == 1 )
+			{
+				MF_A[N_A] = i;
+				N_A++;
+			} 
+			if ( (B_Norm > MF_X[i][0] && B_Norm < MF_X[i][2]) && B_Normal == 1 )
+			{
+				MF_B[N_B] = i;
+				N_B++;
+			}
 		}
 	}
-
-	#ifdef DEBUG		
-		printf("DEBUG --- Line 65 -- Min_Fun.c\n");
-		printf("N_A = %i	N_B = %i\n", N_A, N_B);
-		printf("\n");
-	#endif
-
+	
 	//------ On définit la hauteur relative aux differentes MFs ------//
+
 		// Pour A
+
 	for ( i = 0; i < N_A; i++ )
 	{
 		// on teste les cas particuliers : 
@@ -103,14 +89,10 @@ int Min_Fun(int TAILLE, int** regle, float A_Norm, float B_Norm, float** MF_X, i
 		{
 			return -1;
 		}
-
-		#ifdef DEBUG
-			printf("DEBUG --- Line 96 --- Min_Fin.c\n");
-			printf("Y_A[%i] = %f\n", i, Y_A[i]);
-			printf("\n");
-		#endif
-	} 
+	}
+ 
 		// Pour B
+
 	for ( i = 0; i < N_B; i++ )
 	{
 		// on teste les cas particuliers : 
@@ -134,12 +116,6 @@ int Min_Fun(int TAILLE, int** regle, float A_Norm, float B_Norm, float** MF_X, i
 		{
 			return -1;
 		}
-
-		#ifdef DEBUG
-			printf("DEBUG --- Line 128 --- Min_Fin.c\n");
-			printf("Y_B[%i] = %f\n", i, Y_B[i]);
-			printf("\n");
-		#endif
 	} 
 	
 	//------ On applique maintenant la matrice des règles ------//	
@@ -147,23 +123,11 @@ int Min_Fun(int TAILLE, int** regle, float A_Norm, float B_Norm, float** MF_X, i
 	{
 		for (j = 0; j < N_B; j++)
 		{
-			MF_Min[count] = regle[MF_A[i]][MF_B[j]];
-			Y_Min[count++] = min(Y_A[i], Y_B[j]);
+			MF_Prod[count] = regle[MF_A[i]][MF_B[j]];
+			Y_Prod[count++] = Y_A[i] * Y_B[j];
 		} 
 	}
-	
-	#ifdef DEBUG
-		printf("DEBUG --- Line 145 --- Min_Fun.c\n");
-		for (i=0; i<count; i++)
-		{
-		printf("MF_Min[%i] = %i		Y_Min[%i] = %f\n", i, MF_Min[i], i, Y_Min[i]);
-		}
-		printf("\n");
-		printf("N_Min = %i\n\n", count);
-	#endif
 		
 	// On définit le nombre de MFs de sortie
-	*N_Min = count;
-  
-	return 0;
+	*N_Prod = count;
 }
