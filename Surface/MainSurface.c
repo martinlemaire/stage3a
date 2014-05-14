@@ -7,7 +7,7 @@
 #include "Surface.h"
 #include "Functions.h"
 
-#define TAILLE 3
+#define TAILLE 5
 
 //#define DEBUG
 
@@ -17,8 +17,8 @@ int main()
 	int i,j;
 	
 	// Entrées de la fonction
-	int regle_IN[TAILLE][TAILLE] = { { 0, 0, 1} , { 0, 1, 2} , { 1, 2, 2} };
-	float MF_X_IN[TAILLE][3] = { {0 ,0 , 0.5 } , { 0 , 0.5 , 1 } , {0.5 , 1 , 1} };
+	int regle_IN[TAILLE][TAILLE] = { { 0, 1, 2, 3, 4} , { 1, 1, 2, 3, 4} , { 2, 2, 2, 3, 4} , { 3, 3, 3, 3, 4} , {4, 4, 4, 4, 4} };
+	float MF_X_IN[TAILLE][3] = { {0 ,0 , 0.25 } , { 0 , 0.25 , 0.5 } , {0.25 , 0.5 , 0.75} , {0.5, 0.75, 1} , {0.75, 1, 1} };
 	
 		// Création de toutes les matrices dynamiquement
 	//MF_X

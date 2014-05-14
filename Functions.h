@@ -17,3 +17,6 @@ int ProdFun(int TAILLE, int** regle, float A_Norm, float B_Norm, float** MF_X, i
 
 float CrossFun( float X_A, float Y_A, float X_B, float Y_B, float Y_C);
 
+int NormalValues(int TAILLE, float** MF_X, float* Min, float* Max);
+
+float Normalisation(float Centroid_IN, float Min, float Max);

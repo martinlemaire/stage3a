@@ -1,9 +1,9 @@
 #Makefile de l'executable test
 
-all : Min_Fun.o CrossFun.o MaxFun.o Myfun.o Centroid.o Fuzzy.o ProdFun.o
-	gcc -g Min_Fun.o CrossFun.o MaxFun.o Myfun.o Centroid.o Fuzzy.o ProdFun.o -lm -o test
+all : Min_Fun.o CrossFun.o MaxFun.o Myfun.o Centroid.o Fuzzy.o ProdFun.o Normalisation.o NormalValues.o
+	gcc -g Min_Fun.o CrossFun.o MaxFun.o Myfun.o Centroid.o Fuzzy.o ProdFun.o NormalValues.o Normalisation.o -lm -o test
 
-Myfun.o : Min_Fun.c Myfun.c MaxFun.c 
+Myfun.o : Min_Fun.c Myfun.c MaxFun.c Normalisation.c NormalValues.c
 	gcc -g -c Myfun.c -o Myfun.o
 
 Fuzzy.o : Min_Fun.c MaxFun.c Centroid.c
@@ -23,6 +23,13 @@ Centroid.o : Centroid.c
 
 ProdFun.o : ProdFun.c
 	gcc -g -c ProdFun.c -o ProdFun.o
+
+Normalisation.o : Normalisation.c
+	gcc -g -c Normalisation.c -o Normalisation.o
+
+NormalValues.o : NormalValues.c
+	gcc -g -c NormalValues.c -o NormalValues.o
+
 # suppression des fichiers temporaires
 clean:
 	rm -rf *.o

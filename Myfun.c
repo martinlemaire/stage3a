@@ -16,7 +16,7 @@ int main()
 	float A_min = 1*exp(-9);
 	float A_max = 1*exp(-7);
 	char A_scale[] = "log";
-	float B = 0.6666666;
+	float B = 0;
 	float B_min = 0;
 	float B_max = 1;
 	char B_scale[] = "lin";
@@ -42,6 +42,9 @@ int main()
 	int N_Max = 0;	
 
 	float Centroide = 0.0;
+
+	float Min = 0;
+	float Max = 0;
 		// Variables de test
 	int test_min = 0;
 	int test_max = 0;	
@@ -90,7 +93,7 @@ int main()
   //   A_norm = (A-A_min)/(A_max-A_min);
   //}
 
-	A_norm = 0.16;
+	A_norm = 0;
 	
   if (strcmp(B_scale,"log") == 0)
   {
@@ -106,6 +109,14 @@ int main()
 
 	printf("Centroide = %f\n", Centroide); 
 
+	// On normalise les valeurs
+		// On calcule le min et le max
+	NormalValues(TAILLE, MF_X, &Min, &Max);
+	
+		// On normalise la valeur
+	Centroide = Normalisation(Centroide, Min, Max);
+
+	printf("Centroide Normalisé = %f\n", Centroide);
 
 	// On libere la mémoire allouée
 	for(i=0; i<TAILLE; i++)
