@@ -24,3 +24,5 @@ float Normalisation(float Centroid_IN, float Min, float Max);
 float Synth(int* regle, int TAILLE, float** MF_X, float A_norm, char* And, char* Or);
 
 int SynthMin(int TAILLE, int* regle, float A_Norm, float** MF_X, int* MF_Min, float* Y_Min, int* N_Min);
+
+float AutoBench(int taille, int NbPointsA, int NbPointsB);
