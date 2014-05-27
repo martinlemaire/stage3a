@@ -1,67 +1,86 @@
 #Makefile de l'executable test
+all : SinglePoint Surface Benchmark AutoBench SysLin AndSimu autoRule
 
-SinglePoint : Min_Fun.o CrossFun.o MaxFun.o SinglePoint.o Centroid.o Fuzzy.o ProdFun.o Normalisation.o NormalValues.o SynthMin.o Synth.o
-	gcc -g Min_Fun.o CrossFun.o MaxFun.o SinglePoint.o Centroid.o Fuzzy.o ProdFun.o NormalValues.o Normalisation.o SynthMin.o Synth.o -lm -o SinglePoint
+autoRule : ./Sources/autoRule.c
+	gcc -g ./Sources/autoRule.c -o -lm autoRule
 
-Surface : Min_Fun.o CrossFun.o MaxFun.o Centroid.o Fuzzy.o ProdFun.o Surface.o MainSurface.o Normalisation.o NormalValues.o
-	gcc -g Min_Fun.o CrossFun.o MaxFun.o Centroid.o Fuzzy.o ProdFun.o Surface.o MainSurface.o Normalisation.o NormalValues.o -lm -o Surf
+SinglePoint : ./Objects/Min_Fun.o ./Objects/CrossFun.o ./Objects/MaxFun.o ./Objects/SinglePoint.o ./Objects/Centroid.o ./Objects/Fuzzy.o ./Objects/ProdFun.o ./Objects/Normalisation.o ./Objects/NormalValues.o ./Objects/SynthMin.o ./Objects/Synth.o
+	gcc -g ./Objects/Min_Fun.o ./Objects/CrossFun.o ./Objects/MaxFun.o ./Objects/SinglePoint.o ./Objects/Centroid.o ./Objects/Fuzzy.o ./Objects/ProdFun.o ./Objects/NormalValues.o ./Objects/Normalisation.o ./Objects/SynthMin.o ./Objects/Synth.o -lm -o SinglePoint
 
-Benchmark : Min_Fun.o CrossFun.o MaxFun.o Benchmark.o Centroid.o Fuzzy.o ProdFun.o Normalisation.o NormalValues.o
-	gcc -g Min_Fun.o CrossFun.o MaxFun.o Benchmark.o Centroid.o Fuzzy.o ProdFun.o NormalValues.o Normalisation.o -lm -o Bench
+Surface : ./Objects/Min_Fun.o ./Objects/CrossFun.o ./Objects/MaxFun.o ./Objects/Centroid.o ./Objects/Fuzzy.o ./Objects/ProdFun.o ./Objects/Surface.o ./Objects/MainSurface.o ./Objects/Normalisation.o ./Objects/NormalValues.o
+	gcc -g ./Objects/Min_Fun.o ./Objects/CrossFun.o ./Objects/MaxFun.o ./Objects/Centroid.o ./Objects/Fuzzy.o ./Objects/ProdFun.o ./Objects/Surface.o ./Objects/MainSurface.o ./Objects/Normalisation.o ./Objects/NormalValues.o -lm -o Surf
 
-SysLin : Min_Fun.o CrossFun.o MaxFun.o SysLin.o Centroid.o Fuzzy.o ProdFun.o Normalisation.o NormalValues.o SynthMin.o Synth.o
-	gcc -g Min_Fun.o CrossFun.o MaxFun.o SysLin.o Centroid.o Fuzzy.o ProdFun.o NormalValues.o Normalisation.o SynthMin.o Synth.o -lm -o SysLin
+Benchmark : ./Objects/Min_Fun.o ./Objects/CrossFun.o ./Objects/MaxFun.o ./Objects/Benchmark.o ./Objects/Centroid.o ./Objects/Fuzzy.o ./Objects/ProdFun.o ./Objects/Normalisation.o ./Objects/NormalValues.o
+	gcc -g ./Objects/Min_Fun.o ./Objects/CrossFun.o ./Objects/MaxFun.o ./Objects/Benchmark.o ./Objects/Centroid.o ./Objects/Fuzzy.o ./Objects/ProdFun.o ./Objects/NormalValues.o ./Objects/Normalisation.o -lm -o Bench
 
-SinglePoint.o : Min_Fun.c SinglePoint.c MaxFun.c Normalisation.c NormalValues.c
-	gcc -g -c SinglePoint.c -o SinglePoint.o
+AutoBench : ./Objects/Min_Fun.o ./Objects/CrossFun.o ./Objects/MaxFun.o ./Objects/AutoBench.o ./Objects/Centroid.o ./Objects/Fuzzy.o ./Objects/ProdFun.o ./Objects/Normalisation.o ./Objects/NormalValues.o ./Objects/MainAutoBench.o
+	gcc -g ./Objects/Min_Fun.o ./Objects/CrossFun.o ./Objects/MaxFun.o ./Objects/AutoBench.o ./Objects/Centroid.o ./Objects/Fuzzy.o ./Objects/ProdFun.o ./Objects/NormalValues.o ./Objects/Normalisation.o ./Objects/MainAutoBench.o -lm -o AutoBench
 
-MainSurface.o: Fuzzy.c Surface.c
-	gcc -g -c MainSurface.c -o MainSurface.o
+SysLin : ./Objects/Min_Fun.o ./Objects/CrossFun.o ./Objects/MaxFun.o ./Objects/SysLin.o ./Objects/Centroid.o ./Objects/Fuzzy.o ./Objects/ProdFun.o ./Objects/Normalisation.o ./Objects/NormalValues.o ./Objects/SynthMin.o ./Objects/Synth.o
+	gcc -g ./Objects/Min_Fun.o ./Objects/CrossFun.o ./Objects/MaxFun.o ./Objects/SysLin.o ./Objects/Centroid.o ./Objects/Fuzzy.o ./Objects/ProdFun.o ./Objects/NormalValues.o ./Objects/Normalisation.o ./Objects/SynthMin.o ./Objects/Synth.o -lm -o SysLin
 
-Fuzzy.o : Min_Fun.c MaxFun.c Centroid.c
-	gcc -g -c Fuzzy.c -o Fuzzy.o
+AndSimu : ./Objects/Min_Fun.o ./Objects/CrossFun.o ./Objects/MaxFun.o ./Objects/AndSimu.o ./Objects/Centroid.o ./Objects/Fuzzy.o ./Objects/ProdFun.o ./Objects/Normalisation.o ./Objects/NormalValues.o 
+	gcc -g ./Objects/Min_Fun.o ./Objects/CrossFun.o ./Objects/MaxFun.o ./Objects/AndSimu.o ./Objects/Centroid.o ./Objects/Fuzzy.o ./Objects/ProdFun.o ./Objects/NormalValues.o ./Objects/Normalisation.o -lm -o AndSimu
 
-Min_Fun.o : Min_Fun.c
-	gcc -g -c Min_Fun.c -o Min_Fun.o
+./Objects/SinglePoint.o : ./Sources/Min_Fun.c ./Sources/SinglePoint.c ./Sources/MaxFun.c ./Sources/Normalisation.c ./Sources/NormalValues.c
+	gcc -g -c ./Sources/SinglePoint.c -o ./Objects/SinglePoint.o
 
-MaxFun.o : MaxFun.c CrossFun.c
-	gcc -g -c MaxFun.c -o MaxFun.o
+./Objects/MainSurface.o: ./Sources/Fuzzy.c ./Sources/Surface.c
+	gcc -g -c ./Sources/MainSurface.c -o ./Objects/MainSurface.o
 
-CrossFun.o : CrossFun.c
-	gcc -g -c CrossFun.c -o CrossFun.o
+./Objects/Fuzzy.o : ./Sources/Min_Fun.c ./Sources/MaxFun.c ./Sources/Centroid.c
+	gcc -g -c ./Sources/Fuzzy.c -o ./Objects/Fuzzy.o
 
-Centroid.o : Centroid.c
-	gcc -g -c Centroid.c -o Centroid.o
+./Objects/Min_Fun.o : ./Sources/Min_Fun.c
+	gcc -g -c ./Sources/Min_Fun.c -o ./Objects/Min_Fun.o
 
-ProdFun.o : ProdFun.c
-	gcc -g -c ProdFun.c -o ProdFun.o
+./Objects/MaxFun.o : ./Sources/MaxFun.c ./Sources/CrossFun.c
+	gcc -g -c ./Sources/MaxFun.c -o ./Objects/MaxFun.o
 
-Normalisation.o : Normalisation.c
-	gcc -g -c Normalisation.c -o Normalisation.o
+./Objects/CrossFun.o : ./Sources/CrossFun.c
+	gcc -g -c ./Sources/CrossFun.c -o ./Objects/CrossFun.o
 
-NormalValues.o : NormalValues.c
-	gcc -g -c NormalValues.c -o NormalValues.o
+./Objects/Centroid.o : ./Sources/Centroid.c
+	gcc -g -c ./Sources/Centroid.c -o ./Objects/Centroid.o
 
-Synth.o : Synth.c SynthMin.c
-	gcc -g -c Synth.c -o Synth.o
+./Objects/ProdFun.o : ./Sources/ProdFun.c
+	gcc -g -c ./Sources/ProdFun.c -o ./Objects/ProdFun.o
 
-SynthMin.o : SynthMin.c
-	gcc -g -c SynthMin.c -o SynthMin.o
+./Objects/Normalisation.o : ./Sources/Normalisation.c
+	gcc -g -c ./Sources/Normalisation.c -o ./Objects/Normalisation.o
 
-Surface.o : Surface.c Fuzzy.c Normalisation.c NormalValues.c
-	gcc -g -c Surface.c -o Surface.o
+./Objects/NormalValues.o : ./Sources/NormalValues.c
+	gcc -g -c ./Sources/NormalValues.c -o ./Objects/NormalValues.o
 
-Benchmark.o : Min_Fun.c MaxFun.c Normalisation.c NormalValues.c Benchmark.c
-	gcc -g -c Benchmark.c -o Benchmark.o
+./Objects/Synth.o : ./Sources/Synth.c ./Sources/SynthMin.c
+	gcc -g -c ./Sources/Synth.c -o ./Objects/Synth.o
 
-SysLin.o : Synth.c SynthMin.c SysLin.c MaxFun.c Normalisation.c NormalValues.c
-	gcc -g -c SysLin.c -o SysLin.o
+./Objects/SynthMin.o : ./Sources/SynthMin.c
+	gcc -g -c ./Sources/SynthMin.c -o ./Objects/SynthMin.o
+
+./Objects/Surface.o : ./Sources/Surface.c ./Sources/Fuzzy.c ./Sources/Normalisation.c ./Sources/NormalValues.c
+	gcc -g -c ./Sources/Surface.c -o ./Objects/Surface.o
+
+./Objects/Benchmark.o : ./Sources/Min_Fun.c ./Sources/MaxFun.c ./Sources/Normalisation.c ./Sources/NormalValues.c ./Sources/Benchmark.c
+	gcc -g -c ./Sources/Benchmark.c -o ./Objects/Benchmark.o
+
+./Objects/SysLin.o : ./Sources/Synth.c ./Sources/SynthMin.c ./Sources/SysLin.c ./Sources/MaxFun.c ./Sources/Normalisation.c ./Sources/NormalValues.c
+	gcc -g -c ./Sources/SysLin.c -o ./Objects/SysLin.o
+
+./Objects/AutoBench.o : ./Sources/Min_Fun.c ./Sources/MaxFun.c ./Sources/Normalisation.c ./Sources/NormalValues.c  ./Sources/AutoBench.c
+	gcc -g -c ./Sources/AutoBench.c -o ./Objects/AutoBench.o
+
+./Objects/MainAutoBench.o : ./Sources/MainAutoBench.c ./Sources/AutoBench.c
+	gcc -g -c ./Sources/MainAutoBench.c -o ./Objects/MainAutoBench.o
+
+./Objects/AndSimu.o : ./Sources/Fuzzy.c ./Sources/Normalisation.c ./Sources/NormalValues.c ./Sources/AndSimu.c
+	gcc -g -c ./Sources/AndSimu.c -o ./Objects/AndSimu.o
 
 # suppression des fichiers temporaires
 clean:
-	rm -rf *.o
+	rm -rf ./Objects/*.o
  
 # suppression de tous les fichiers, sauf les sources,
 # en vue d'une reconstruction complète
 mrproper: clean
-	rm -rf Programme
+	rm -rf SinglePoint Surf Bench AutoBench SysLin AndSimu autoRule
