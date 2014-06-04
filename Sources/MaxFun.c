@@ -1,3 +1,16 @@
+//---------------------------------------------------------------------------//
+// Fichier      : MaxFun.c                                           	     //
+// Auteur 	: LEMAIRE Martin                                             //
+// Description	: Fonction qui va réaliser l'opérateur Fuzzy OU.	     //
+//                A partir du nombre de MFs (Taille), de la géometrie de ces //
+//                Mfs (MF_X), et des résultats de la fonction Fuzzy Min (ET) //
+//		  (MF_Min, Y_Min, N_Min) va modifier les valeurs de X_Max,   //
+//                Y_Max et N_Max passés a la fonction. 			     //
+//		  Pour cela il va prendre le maximum des valeurs contenues   //
+//		  dans Y_Min pour chaque X_Min correspondant, et renvoyer les//
+//		  points "intéressants"		                             //
+//---------------------------------------------------------------------------//
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -143,13 +156,17 @@ int MaxFun(int Taille, float** MF_X, int* MF_Min, float* Y_Min, int N_Min, float
 		X_Max[N_Max_Temp] = 0.0;
 		Y_Max[N_Max_Temp++] = Y_Min[0];
 	}
-	else //Sinon
+	else if(MF_Min[0] >= 0 && MF_Min[0] < Taille) //Sinon
 	{
 		X_Max[N_Max_Temp] = MF_X[MF_Min[0]][0];
 		Y_Max[N_Max_Temp++] = 0.0;
 		
 		X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[0]][0], 0.0, MF_X[MF_Min[0]][1], 1.0, Y_Min[0]);
 		Y_Max[N_Max_Temp++] = Y_Min[0];
+	}
+	else
+	{
+		return -1;
 	}
 	
 	#ifdef DEBUG
@@ -163,56 +180,63 @@ int MaxFun(int Taille, float** MF_X, int* MF_Min, float* Y_Min, int N_Min, float
 	// Pour tous les autres points sauf le dernier
 	for(i = 0; i<N_Single-1; i++)
 	{
-		//PLusieurs cas différents:
-		if( Y_Min[i] > Y_Cross[MF_Min[i]] && Y_Min[i+1] > Y_Cross[MF_Min[i]] )
+		if(MF_Min[i] >= 0 && MF_Min[i] < Taille)
 		{
-			X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i]][1], 1.0, MF_X[MF_Min[i]][2], 0.0, Y_Min[i]);
-			Y_Max[N_Max_Temp++] = Y_Min[i];
-	
-			X_Max[N_Max_Temp] = X_Cross[MF_Min[i]];
-			Y_Max[N_Max_Temp++] = Y_Cross[MF_Min[i]];
-   			
-			X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i+1]][0], 0.0, MF_X[MF_Min[i+1]][1], 1.0, Y_Min[i+1]);
-			Y_Max[N_Max_Temp++] = Y_Min[i+1];
-		}
-		else if( Y_Min[i] >= Y_Cross[MF_Min[i]] && Y_Min[i+1] <= Y_Cross[MF_Min[i]] )
-		{
-			X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i]][1], 1.0, MF_X[MF_Min[i]][2], 0.0, Y_Min[i]);
-			Y_Max[N_Max_Temp++] = Y_Min[i];	
-
-			X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i]][1], 1.0, MF_X[MF_Min[i]][2], 0.0, Y_Min[i+1]);
-			Y_Max[N_Max_Temp++] = Y_Min[i+1];	
-		}
-		else if( Y_Min[i] <= Y_Cross[MF_Min[i]] && Y_Min[i+1] >= Y_Cross[MF_Min[i]] )
-		{
-			X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i+1]][1], 1.0, MF_X[MF_Min[i+1]][0], 0.0, Y_Min[i]);
-			Y_Max[N_Max_Temp++] = Y_Min[i];	
-
-			X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i+1]][1], 1.0, MF_X[MF_Min[i+1]][0], 0.0, Y_Min[i+1]);
-			Y_Max[N_Max_Temp++] = Y_Min[i+1];	
-		}
-		else if( Y_Min[i] <= Y_Cross[MF_Min[i]] && Y_Min[i+1] <= Y_Cross[MF_Min[i]] )
-		{
-		  if( Y_Min[i] > Y_Min[i+1] + 0.0001 )
-			{		  
-			X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i]][1], 1.0, MF_X[MF_Min[i]][2], 0.0, Y_Min[i]);
-			Y_Max[N_Max_Temp++] = Y_Min[i];	
-
-			X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i]][1], 1.0, MF_X[MF_Min[i]][2], 0.0, Y_Min[i+1]);
-			Y_Max[N_Max_Temp++] = Y_Min[i+1];	
-			}
-			else if( Y_Min[i] < Y_Min[i+1] -0.0001)
+			//PLusieurs cas différents:
+			if( Y_Min[i] > Y_Cross[MF_Min[i]] && Y_Min[i+1] > Y_Cross[MF_Min[i]] )
 			{
-			X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i+1]][1], 1.0, MF_X[MF_Min[i+1]][0], 0.0, Y_Min[i]);
-			Y_Max[N_Max_Temp++] = Y_Min[i];	
-
-			X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i+1]][1], 1.0, MF_X[MF_Min[i+1]][0], 0.0, Y_Min[i+1]);
-			Y_Max[N_Max_Temp++] = Y_Min[i+1];		
+				X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i]][1], 1.0, MF_X[MF_Min[i]][2], 0.0, Y_Min[i]);
+				Y_Max[N_Max_Temp++] = Y_Min[i];
+		
+				X_Max[N_Max_Temp] = X_Cross[MF_Min[i]];
+				Y_Max[N_Max_Temp++] = Y_Cross[MF_Min[i]];
+	   			
+				X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i+1]][0], 0.0, MF_X[MF_Min[i+1]][1], 1.0, Y_Min[i+1]);
+				Y_Max[N_Max_Temp++] = Y_Min[i+1];
 			}
-		}
-		// Error
+			else if( Y_Min[i] >= Y_Cross[MF_Min[i]] && Y_Min[i+1] <= Y_Cross[MF_Min[i]] )
+			{
+				X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i]][1], 1.0, MF_X[MF_Min[i]][2], 0.0, Y_Min[i]);
+				Y_Max[N_Max_Temp++] = Y_Min[i];	
+	
+				X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i]][1], 1.0, MF_X[MF_Min[i]][2], 0.0, Y_Min[i+1]);
+				Y_Max[N_Max_Temp++] = Y_Min[i+1];	
+			}
+			else if( Y_Min[i] <= Y_Cross[MF_Min[i]] && Y_Min[i+1] >= Y_Cross[MF_Min[i]] )
+			{
+				X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i+1]][1], 1.0, MF_X[MF_Min[i+1]][0], 0.0, Y_Min[i]);
+				Y_Max[N_Max_Temp++] = Y_Min[i];	
+	
+				X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i+1]][1], 1.0, MF_X[MF_Min[i+1]][0], 0.0, Y_Min[i+1]);
+				Y_Max[N_Max_Temp++] = Y_Min[i+1];	
+			}
+			else if( Y_Min[i] <= Y_Cross[MF_Min[i]] && Y_Min[i+1] <= Y_Cross[MF_Min[i]] )
+			{
+			  if( Y_Min[i] > Y_Min[i+1] + 0.0001 )
+				{		  
+				X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i]][1], 1.0, MF_X[MF_Min[i]][2], 0.0, Y_Min[i]);
+				Y_Max[N_Max_Temp++] = Y_Min[i];	
+	
+				X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i]][1], 1.0, MF_X[MF_Min[i]][2], 0.0, Y_Min[i+1]);
+				Y_Max[N_Max_Temp++] = Y_Min[i+1];	
+				}
+				else if( Y_Min[i] < Y_Min[i+1] -0.0001)
+				{
+				X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i+1]][1], 1.0, MF_X[MF_Min[i+1]][0], 0.0, Y_Min[i]);
+				Y_Max[N_Max_Temp++] = Y_Min[i];	
+
+				X_Max[N_Max_Temp] = CrossFun(MF_X[MF_Min[i+1]][1], 1.0, MF_X[MF_Min[i+1]][0], 0.0, Y_Min[i+1]);
+				Y_Max[N_Max_Temp++] = Y_Min[i+1];		
+				}
+			}
+			// Error
+			else 
+				return -1;
+		}	
 		else 
+		{
 			return -1;
+		}
 	}			
 	//On rajoute le dernier point
 	if (MF_Min[N_Single-1] == Taille-1) // La derniere MF de MF_Min est MF[taille-1]

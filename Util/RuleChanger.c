@@ -80,7 +80,6 @@ int main(int argc, char *argv[])
 	/* --------- On retrouve le facteur de zoom ou étirement ---------------*/
 	
 	zoom = (float)(TailleOut-1) / (TailleIn-1);
-	printf("TailleOut = %i\tTailleIn = %i\t zoom = %f\n\n", TailleOut, TailleIn, zoom);
 
 	/* -------- On implémente l'algorithme -------------- */
 
@@ -130,6 +129,18 @@ int main(int argc, char *argv[])
 		}
 		//fprintf(fichierMatOut, "\n");
 	}
+
+	// On libère la mémoire
+	fclose(fichierMatIn);
+	fclose(fichierMatOut);
+
+	for(i=0; i<TailleIn; i++)
+		free(MatIn[i]);
+	free(MatIn);
+
+	for(i=0; i<TailleOut; i++)
+		free(MatOut[i]);
+	free(MatOut);
 
 	return 0;
 }

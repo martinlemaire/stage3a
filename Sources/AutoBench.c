@@ -1,3 +1,14 @@
+//---------------------------------------------------------------------------//
+// Fichier      : AutoBench.c                                          	     //
+// Auteur 	: LEMAIRE Martin                                             //
+// Description	: Fonction qui va etre utiliser dans MainAutoBench.c.        //
+//                Elle prends comme paramètre le nbr de MFs (taille), et les //
+//                nombres de points selon x et y (NbPointsA(B)) à calculer   //
+//		  Et elle renvoie le temps en coups d'horloges pris pour     //
+//                calculer ces points					     //
+//---------------------------------------------------------------------------//
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

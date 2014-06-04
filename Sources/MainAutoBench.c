@@ -1,3 +1,14 @@
+//---------------------------------------------------------------------------//
+// Fichier      : MainAutoBench.c                                     	     //
+// Auteur 	: LEMAIRE Martin                                             //
+// Description	: Main qui va appeler la fonction AutoBench avec un nombre de//
+//                points "NbPoints"² et avec tous les nombre de MFs compris  //
+//                entre "MF_Start" et "MF_Stop".			     //
+//		  On renvoie ensuite les temps de calculs pour chaque nombre //
+//                de MF dans "Results/AutoBench.dat"                         //
+//---------------------------------------------------------------------------//
+// ./autoBench "MF_Start" "MF_Stop" "NbPoints"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

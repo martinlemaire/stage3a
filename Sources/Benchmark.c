@@ -1,3 +1,12 @@
+//---------------------------------------------------------------------------//
+// Fichier      : Benchmark.c                                         	     //
+// Auteur 	: LEMAIRE Martin                                             //
+// Description	: Main qui va calculer "NbPoints"² points avec une matrice de//
+//                règles de taille "Taille", et qui renvoie en console le    //
+//                le temps pris pour calculer ces points et quelques moyennes//
+//---------------------------------------------------------------------------//
+// ./Bench "Taille" "NbPoints"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

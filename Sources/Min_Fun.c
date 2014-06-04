@@ -1,12 +1,14 @@
-//------------------------------------------------------------------------------------------------------------------//
-// Fichier			: Min_Fun.c																																													//
-// Auteur 			: LEMAIRE Martin																																										//
-// Description	: Fonction Fuzzy qui va prendre les valeurs normalisées d'entrées, définir leur appartenance aux 		//	
-//                différentes Memberships Functions (MFs), la hauteur associé à ces MFs (Ordonnées de croisement 		//
-//								entre la MF et la droite x = A_Norm par exemple). Ensuite cette fonction va appliquer la matrice	//
-//								des règles à ces MFs définissant suivant les entrées les MFs de sortie correspondantes, et 				//
-//								la hauteur associée a celle ci grace a la fonction Minimum. 																			//
-//------------------------------------------------------------------------------------------------------------------//
+//----------------------------------------------------------------------------------//  
+// Fichier : Min_Fun.c							            //
+// Auteur : LEMAIRE Martin   							    //
+// Description	: Fonction Fuzzy qui va prendre les valeurs normalisées d'entrées,  //         
+//                définir leur appartenance aux différentes MFs, la hauteur associé //	
+//                à ces MFs (Ordonnées de croisement entre la MF et la droite       //
+//		  x = A_Norm par exemple). Ensuite cette fonction va appliquer      //
+//                la matrice des règles à ces MFs définissant suivant les entrées   //
+//		  les MFs de sortie correspondantes, et la hauteur associée à       //
+//                celle ci grace a la fonction Minimum.			            //
+//----------------------------------------------------------------------------------//
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,26 +37,31 @@ int Min_Fun(int TAILLE, int** regle, float A_Norm, float B_Norm, float** MF_X, i
 	
 	int testA = 1;
 	int testB = 1;
+
+	#ifdef DEBUG
+		printf("DEBUG --- Line 41 --- Min_Fun.c\n");
+		printf("A = %.10f\tB = %10f\n", A_Norm, B_Norm);
+	#endif
+
 	//------ Appartenances aux différentes MFs pour A_Norm et B_norm ------//
 		// On teste deja si c'est égal a 0 ou 1
-	if (A_Norm == 0 || A_Norm == 1)
+	if (A_Norm == 0.0 || A_Norm == 1)
 	{
 		MF_A[N_A] = A_Norm * (TAILLE -1);
 		N_A++;
 	}
-	if (B_Norm == 0 || B_Norm == 1)
+	if (B_Norm == 0.0 || B_Norm == 1)
 	{
 		MF_B[N_B] = B_Norm * (TAILLE -1);
 		N_B++;
 	}
-		// On teste le reste
+	
 	for ( i = 0; i<TAILLE; i++ )
 	{
 		if ( A_Norm > MF_X[i][0] && A_Norm < MF_X[i][2] )
 		{
 			MF_A[N_A] = i;
 			N_A++;
-
 			#ifdef DEBUG
 				printf("DEBUG --- Line 48 --- Min_Fun.c\n");
 				printf("MF_A[%i] = %i\n", N_A -1, i);
@@ -71,7 +78,7 @@ int Min_Fun(int TAILLE, int** regle, float A_Norm, float B_Norm, float** MF_X, i
 			#endif
 		}
 	}
-
+	
 	#ifdef DEBUG		
 		printf("DEBUG --- Line 65 -- Min_Fun.c\n");
 		printf("N_A = %i	N_B = %i\n", N_A, N_B);

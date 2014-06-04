@@ -1,3 +1,11 @@
+//---------------------------------------------------------------------------//
+// Fichier      : SinglePoint.c                                       	     //
+// Auteur 	: LEMAIRE Martin                                             //
+// Description	: Main qui recoit matrice de règle, Mfs, Nbr de Mfs, valeur  //
+//                de deux entrées et calcul la sortie en appelant les        //
+//                fcontions necessaires.				     //
+//---------------------------------------------------------------------------//
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

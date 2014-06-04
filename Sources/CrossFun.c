@@ -1,10 +1,10 @@
-//----------------------------------------------------------------//
-// Fichier 			: CrossFun.c																			//
-// Auteur 			: LEMAIRE Martin																	//
-// Description	: Fonction qui donne l'abcisse d'un point à 			//
-//								partir de l'ordonné de celui ci et de l'abcisse //
-//								et l'ordonnée de deux points sur la meme droite //
-//----------------------------------------------------------------//
+//------------------------------------------------------------------------//
+// Fichier      : CrossFun.c                                           	  //
+// Auteur 	: LEMAIRE Martin                                          //
+// Description	: Fonction qui donne l'abcisse d'un point à               //
+//                partir de l'ordonné de celui ci et de l'abcisse         //
+//                et l'ordonnée de deux points sur la meme droite         //
+//------------------------------------------------------------------------//
 
 #include <stdio.h>
 #include <stdlib.h>

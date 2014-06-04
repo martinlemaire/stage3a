@@ -1,3 +1,11 @@
+//---------------------------------------------------------------------------//
+// Fichier      : MainSurface.c                                       	     //
+// Auteur 	: LEMAIRE Martin                                             //
+// Description	: Main qui va appeler la fonction Surface afin de remplir    //
+//                un fichier texte pour afficher la surface d'une matrice de //
+//                regle codée en dur.					     //
+//---------------------------------------------------------------------------//
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

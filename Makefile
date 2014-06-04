@@ -1,8 +1,11 @@
 #Makefile de l'executable test
 all : SinglePoint Surface Benchmark AutoBench SysLin AndSimu autoRule
 
-autoRule : ./Sources/autoRule.c
-	gcc -g ./Sources/autoRule.c -o -lm autoRule
+autoTest : ./Objects/Min_Fun.o ./Objects/CrossFun.o ./Objects/MaxFun.o ./Objects/autoTest.o ./Objects/Centroid.o ./Objects/Fuzzy.o ./Objects/ProdFun.o ./Objects/Normalisation.o ./Objects/NormalValues.o ./Objects/Synth.o ./Objects/SynthMin.o
+	gcc -g ./Objects/Min_Fun.o ./Objects/CrossFun.o ./Objects/MaxFun.o ./Objects/autoTest.o ./Objects/Centroid.o ./Objects/Fuzzy.o ./Objects/ProdFun.o ./Objects/NormalValues.o ./Objects/Normalisation.o ./Objects/Synth.o ./Objects/SynthMin.o -lm -o autoTest
+
+autoRule : ./Objects/autoRule.o
+	gcc -g ./Objects/autoRule.o -lm -o autoRule
 
 SinglePoint : ./Objects/Min_Fun.o ./Objects/CrossFun.o ./Objects/MaxFun.o ./Objects/SinglePoint.o ./Objects/Centroid.o ./Objects/Fuzzy.o ./Objects/ProdFun.o ./Objects/Normalisation.o ./Objects/NormalValues.o ./Objects/SynthMin.o ./Objects/Synth.o
 	gcc -g ./Objects/Min_Fun.o ./Objects/CrossFun.o ./Objects/MaxFun.o ./Objects/SinglePoint.o ./Objects/Centroid.o ./Objects/Fuzzy.o ./Objects/ProdFun.o ./Objects/NormalValues.o ./Objects/Normalisation.o ./Objects/SynthMin.o ./Objects/Synth.o -lm -o SinglePoint
@@ -75,6 +78,12 @@ AndSimu : ./Objects/Min_Fun.o ./Objects/CrossFun.o ./Objects/MaxFun.o ./Objects/
 
 ./Objects/AndSimu.o : ./Sources/Fuzzy.c ./Sources/Normalisation.c ./Sources/NormalValues.c ./Sources/AndSimu.c
 	gcc -g -c ./Sources/AndSimu.c -o ./Objects/AndSimu.o
+
+./Objects/autoRule.o : ./Sources/autoRule.c
+	gcc -g -c ./Sources/autoRule.c -o ./Objects/autoRule.o -lm
+
+./Objects/autoTest.o : ./Sources/autoTest.c
+	gcc -g -c ./Sources/autoTest.c -o ./Objects/autoTest.o -lm
 
 # suppression des fichiers temporaires
 clean:

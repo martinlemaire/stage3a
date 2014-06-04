@@ -1,11 +1,13 @@
-//-------------------------------------------------------------------------------------//
-// Fichier: Fuzzy.c		Auteur: Martin LEMAIRE																					 //
-// 																																										 //
-// Description: Une fonction qui utilise les operateurs fuzzy donnés et qui 			 		 //
-// 							calcule le centroide, avec la matrice des regles, 			 							 //
-//							les MFs, et les valeurs des entrées.																	 //
-//-------------------------------------------------------------------------------------//
-
+//---------------------------------------------------------------------------//
+// Fichier      : Fuzzy.c                                           	     //
+// Auteur 	: LEMAIRE Martin                                             //
+// Description	: Fonction qui à partir de la matrice de regle "regle", du   //
+//                nombre de MFs "TAILLE", des profils de ces MFs "MF_X", des //
+//                valeurs en entrée normalisées "A_norm" et "B_norm", et des //
+//		  opérateurs fuzzy à utiliser "And" et "Or" va appeler les   //
+//                opérateurs fuzzy adéquats (Min_Fun, ProdFun, MaxFun,       //
+//		  Centroid) et renvoyer la valeur de sortie correspondante   //
+//---------------------------------------------------------------------------//
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -49,7 +51,8 @@ float Fuzzy(int** regle, int TAILLE, float** MF_X, float A_norm, float B_norm, c
 	
 	// Ensuite, on appele la fonction pour le Or
 	if ( strcmp(Or, "Max") == 0)
-		test_Or = MaxFun(TAILLE, MF_X, MF_And, Y_And, N_And, X_Or, Y_Or, &N_Or);
+		 MaxFun(TAILLE, MF_X, MF_And, Y_And, N_And, X_Or, Y_Or, &N_Or);
+		
 	else if ( strcmp(Or, "ProbSum") == 0)
 		i = 1;// à écrire
 	else 

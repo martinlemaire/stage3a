@@ -26,9 +26,9 @@ int main(int argc, char *argv[])
 	FILE* fichierMF = NULL;
 	int xRange, yRange;	
 	float MinX, MinY, MinZ, MaxX, MaxY, MaxZ;
-	float TempFloat = 0;
+	float TempFloat;
 	int count = 0;
-
+	
 	// Instanciation structure
 	typedef struct
 	{
@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
 			{
 				for(l=0; l<yRange; l++)
 				{		
-					if(TabExp[k][l].x >= i*(1/(float)Taille) && TabExp[k][l].x < (i+1)*(1/(float)Taille) && TabExp[k][l].y >= j*(1/(float)Taille) && TabExp[k][l].y < (j+1)*(1/(float)Taille) )
+					if(TabExp[k][l].x >= i*(1/((float)Taille)) && TabExp[k][l].x < (i+1)*(1/(float)Taille) && TabExp[k][l].y >= j*(1/(float)Taille) && TabExp[k][l].y < (j+1)*(1/(float)Taille) )
 					{
 						TempFloat += TabExp[k][l].z;
 						count++;
@@ -147,6 +147,8 @@ int main(int argc, char *argv[])
 			count = 0.0;
 		}
 	}		
+
+		
 
 	return 0;
 }

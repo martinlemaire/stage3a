@@ -29,7 +29,8 @@ int main(int argc, char *argv[])
 		{
 			printf("Mauvais fichier de sortie");
 			return -1;
-		}	
+		}
+		fclose(fichierIn);	
 	}
 	else if(argc > 3 && !(strcmp(argv[1],"auto")) )
 	{
@@ -39,7 +40,7 @@ int main(int argc, char *argv[])
 		{
 			fseek(fichierOut, -1, SEEK_END); 
 			float Q = 1.0/((float)Taille -1);
-			fprintf(fichierOut, "%f\t%f\t%f\n", 0.0, 0.0, Q);
+			fprintf(fichierOut, "\n%f\t%f\t%f\n", 0.0, 0.0, Q);
 			for(i=1; i<Taille -1; i++)
 			{
 				fprintf(fichierOut, "%f\t%f\t%f\n", (i-1)*Q, Q*i, (i+1)*Q);
@@ -52,6 +53,12 @@ int main(int argc, char *argv[])
 			return -1;
 		}
 	}
+	
+	// On libère la mémoire
+	
+	fclose(fichierOut);
+
+
 	return 0;
 }
 

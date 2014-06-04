@@ -1,3 +1,14 @@
+//---------------------------------------------------------------------------//
+// Fichier      : Centroid.c                                           	     //
+// Auteur 	: LEMAIRE Martin                                             //
+// Description	: Fonction qui prend comme arguments les points calculés par //
+//                MaxFun.c (Points interessants representant l'aire restante)//
+//                Ces points sont d'abcisses X_Max[i] et d'ordonnées Y_Max[i]//
+//		  avec i compris entre 0 et N_Max.                           //
+//                A partir de ces points la fonction va renvoyer le centroide//
+//		  de l'aire restante					     //
+//---------------------------------------------------------------------------//
+
 #include <stdio.h>
 #include <stdio.h>
 

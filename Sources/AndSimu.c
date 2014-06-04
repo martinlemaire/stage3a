@@ -1,3 +1,14 @@
+//---------------------------------------------------------------------------//
+// Fichier      : AndSimu.c                                           	     //
+// Auteur 	    : LEMAIRE Martin                                             //
+// Description	: Main qui va tester plusieurs matrices de regles            //
+//                contenues dans "fichierLib" en comparant les résultats     //
+//                experimentaux contenus dans "fichierExp" et théoriques     //
+//                calculés avec les matrices de regles.                      //
+//                On a le choix de normaliser les valeurs ou non, et de      //
+//                récuperer la surface de la matrice de regle choisie        //
+//                dans "fichierVal"                                          //
+//---------------------------------------------------------------------------//
 // Prototype fonction : ./AndSimu "fichierLib" "fichierExp" "Norm" "fichierVal"
 
 
@@ -182,7 +193,7 @@ int main(int argc, char *argv[])
 				Mse[i] += (Centroide - TabExp[j][k].z)*(Centroide - TabExp[j][k].z);
 			}
 		}
-		Mse[i] = Mse[i]/(xRange*yRange);
+		Mse[i] = (Mse[i]/(xRange*yRange));
 	}
 	
 
@@ -196,8 +207,7 @@ int main(int argc, char *argv[])
 		}
 	}
 	
-	printf("MseMin = %f\tIndMseMin = %i\n",MseMin, IndMseMin);
-	
+
 	if (fichierVal != NULL)
 	{
 		for(i=0; i<xRange; i++)

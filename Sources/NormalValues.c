@@ -1,3 +1,11 @@
+//---------------------------------------------------------------------------//
+// Fichier      : NormalValues.c                                       	     //
+// Auteur 	: LEMAIRE Martin                                             //
+// Description	: Fonction qui en recevant le profil des MFs et leur nombre  //
+//                va définir les valeurs Max et Min pouvant etre prise en    //
+//                calculant un point Fuzzy.				     //
+//---------------------------------------------------------------------------//
+
 #include <stdio.h>
 #include <stdlib.h>
 
